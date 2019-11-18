@@ -1,6 +1,22 @@
 name: Integration testing
 on: [push, pull_request]
 jobs:
+  # lint:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Install NodeJS
+  #       uses: actions/setup-node@v1
+  #       with:
+  #         node-version: 10.x
+  #     - uses: actions/checkout@master
+  #     - uses: bahmutov/npm-install@v1
+  #     - name: Compile
+  #       run: yarn compile
+  #     - name: Lint
+  #       run: yarn lint
+  #     - name: Build
+  #       run: yarn build
+
   test:
     runs-on: ubuntu-latest
     steps:
@@ -9,16 +25,25 @@ jobs:
         with:
           node-version: 10.x
       - uses: actions/checkout@master
-      - uses: bahmutov/npm-install@v1
+      - uses: cypress-io/github-action@676a74f
+        with:
+          runTests: false
+      # - uses: bahmutov/npm-install@v1
       - name: Compile
         run: yarn compile
       - name: Lint
         run: yarn lint
       - name: Build
         run: yarn build
+
       - name: Run e2e test
-        env:
-          CI: 'true'
-          CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
-          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
-        run: yarn start-server-and-test ci:start "http://localhost:2996/status" "cd e2e && yarn cypress:run:ci -c baseUrl=http://localhost:2996"
+        uses: cypress-io/github-action@676a74f
+        with:
+          install: false
+          start: yarn ci:start
+          wait-on: http://localhost:2996/status
+        # env:
+        #   CI: 'true'
+        #   CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+        #   YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+        # run: yarn start-server-and-test ci:start "http://localhost:2996/status" "cd e2e && yarn cypress:run:ci -c baseUrl=http://localhost:2996"
