@@ -1,7 +1,12 @@
 {
   "name": "re-radio",
   "private": true,
-  "workspaces": ["client", "server", "e2e", "common"],
+  "workspaces": [
+    "client",
+    "server",
+    "e2e",
+    "common"
+  ],
   "scripts": {
     "clean": "lerna run clean && lerna clean -y",
     "initialize": "lerna run initialize",
@@ -21,7 +26,8 @@
     "lerna:dev:common": "lerna run dev --scope re-radio-common",
     "db": "yarn db:up",
     "db:up": "lerna run db:up --no-sort --parallel",
-    "db:down": "lerna run db:down --no-sort --parallel"
+    "db:down": "lerna run db:down --no-sort --parallel",
+    "postinstall": "npm run initialize"
   },
   "devDependencies": {
     "lerna": "3.18.4",

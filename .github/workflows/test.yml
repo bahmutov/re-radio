@@ -10,8 +10,6 @@ jobs:
           node-version: 10.x
       - uses: actions/checkout@master
       - uses: bahmutov/npm-install@v1
-      - name: Initialize
-        run: yarn initialize
       - name: Compile
         run: yarn compile
       - name: Lint
@@ -20,7 +18,7 @@ jobs:
         run: yarn build
       - name: Run e2e test
         env:
-          CI: "true"
+          CI: 'true'
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
         run: yarn start-server-and-test ci:start "http://localhost:2996/status" "cd e2e && yarn cypress:run:ci -c baseUrl=http://localhost:2996"
